@@ -18,10 +18,9 @@ public class famousQuotes {
     };
 
 
-
     public static void main(String[] args) {
-        boolean option= true;
-        while(option) {
+        boolean option = true;
+        while (option) {
 
             try {
                 System.out.println("""
@@ -33,32 +32,27 @@ public class famousQuotes {
                 int answer = pScanner.nextInt();
                 pScanner.nextLine();
 
-                if (answer >=1 && answer <= 10){
+                if (answer >= 1 && answer <= 10) {
 
-                    System.out.println(quotes[answer-1]);
+                    System.out.println(quotes[answer - 1]);
 
-                }else {
+                } else {
                     System.out.println("Invalid input! Please select a number between 1 and 10.");
 
                 }
                 System.out.println("Do you want to see another quote? Y/N");
                 String index = pScanner.nextLine().trim().toUpperCase();
-                if (!index.equals("Y")){
-                    option=false;
+                if (!index.equals("Y")) {
+                    option = false;
                     System.out.println("GoodBye!");
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Invalid input! Please enter a valid number.");
                 pScanner.nextLine();
             }
         }
 
 
-
-
-
-
-
-}
+    }
 }
