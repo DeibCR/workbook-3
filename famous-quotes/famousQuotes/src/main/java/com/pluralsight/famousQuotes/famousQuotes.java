@@ -34,6 +34,7 @@ public class famousQuotes {
         }catch (Exception e){
             System.out.println("Your number was out of range!");
             e.printStackTrace();
+
         }
 
 
