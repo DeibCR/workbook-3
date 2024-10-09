@@ -49,5 +49,13 @@ public class Employee {
         return hoursWorked*payRate;
     }
 
-
+    @Override
+    public String toString() {
+        return "Employee{" +
+               "ID= " + employeeID +
+               ",Name ='" + name + '\'' +
+               ",Worked Hours:=" + hoursWorked +
+               ", payRate=" + payRate +
+               '}';
+    }
 }
