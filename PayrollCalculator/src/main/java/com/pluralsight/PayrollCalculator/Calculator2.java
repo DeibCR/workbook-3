@@ -50,7 +50,16 @@ public class Calculator2 {
     private static void writeEmployeeInFile (String fileName, ArrayList<Employee> employees) {
         try (BufferedWriter bufwriter = openFileWritter(fileName)) {
             for (Employee employee : employees) {
-                String output = String.format("%d|%s|%.2f\n", employee.getEmployeeID(), employee.getName(), employee.getGrossPay());
+                String output = String.format("""
+                                %d|%s|%.2f\n
+                                """,employee.getEmployeeID(), employee.getName(), employee.getGrossPay()
+
+
+
+
+
+
+                );
                 bufwriter.write(output);
             }
         } catch (IOException e) {
