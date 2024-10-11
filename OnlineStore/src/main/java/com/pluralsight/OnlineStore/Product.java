@@ -49,6 +49,6 @@ public class Product {
     @Override
     public String toString() {
 
-        return " SKU:  " + this.sku + ", Name ='" + this.productName + "', Price: " + this.price + ", Department=" + this.department + "";
+        return " SKU:  " + this.sku + ", Name = " + this.productName + " , Price: " + this.price + ", Department = " + this.department + "";
     }
 }
