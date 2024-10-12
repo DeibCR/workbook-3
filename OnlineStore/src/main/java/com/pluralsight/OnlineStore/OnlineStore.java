@@ -68,15 +68,16 @@ public class OnlineStore {
 
             switch (option) {
                 case 1:
-                    products = readProductFromFile(fileInput); // Csll to the method that read a file with the productss
+                    products = readProductFromFile(fileInput); // Call to the method that read a file with the products
                     for (Product product : products) {
                         System.out.println(product);// display a list of products
-
                     }
-                    mainScanner.nextLine();
+                    mainScanner.nextLine(); // next line
+                    productsScreenMenu();
 
                     break;
                 case 2:
+                    displayCart();
                     break;
                 case 3:
                     System.out.println("Exiting the Online Store, Thank you!");
@@ -89,7 +90,7 @@ public class OnlineStore {
 
     }
     // Display Products Screen, that call search methods
-    private static void productsMenu() {
+    private static void productsScreenMenu() {
         boolean counter = true;
         while (counter){
             System.out.println("""
@@ -103,15 +104,12 @@ public class OnlineStore {
 
             switch  (option) {
                 case 1:
-
-
-
-
+                    searchMenu();
                     break;
                 case 2:
                     break;
                 case 3:
-                    System.out.println("Exiting the Online Store, Thank you!");
+                    System.out.println("Main Menu");
                     counter = false;
                     break;
                 default:
@@ -141,19 +139,16 @@ public class OnlineStore {
 
             switch  (option) {
                 case 1:
-
-
-
-
-
-
+                    promptSearchName();
                     break;
                 case 2:
+                    promptSearchPrice();
                     break;
                 case 3:
+                    promptSearchDepartment();
                     break;
                 case 4:
-                    System.out.println("Exiting the Online Store, Thank you!");
+                    System.out.println("Products Menu!");
                     opt = false;
                     break;
                 default:
@@ -163,33 +158,90 @@ public class OnlineStore {
 
         }
     }
+    // Search and promptSearch  methods
 
+    public static void   promptSearchName(){
+        System.out.println("Enter the name of the product or type 'X' to go back :");;
+        String name = mainScanner.nextLine().trim(); // Trim and trailing spaces
 
+        if (!name.equalsIgnoreCase("X")) {
 
+            String normalizeInputName = name.toLowerCase(); //Normalize to lowercase search
 
+            ArrayList<Product> matchingProductsName = findProductByName(normalizeInputName);
+            if (!matchingProductsName.isEmpty()) {
+                System.out.println(" Products found:");
+                for (Product product : matchingProductsName) {
+                    System.out.println(product);
+                    addToCartPrompt(product);
 
+                }
+            } else {
+                System.out.println("No products found");
+            }
+        } else {
+            System.out.println("Returning to the search menu");
+        }
+    }
 
-    // Search methods
+    public static void promptSearchPrice(){
+        System.out.println("Enter the price of the product (00.00) or type 'X' to go back :");
+        String input = mainScanner.nextLine();
 
-    public static void prompSearchName(){
-        System.out.println("Enter the name of the product or type 'X' to go back:");;
-        String type = mainScanner.nextLine();
-
+        if (!input.equalsIgnoreCase("X")){
+            try{
+                double price= Double.parseDouble(input);
+                Product product= findProductByPrice(price);
+                if (product!= null){
+                    System.out.println("Product found: " +product);
+                }else {
+                    System.out.println("Product not found");
+                }
+            }catch (NumberFormatException e){
+                System.out.println("Invalid price entered.Plearse try again with the correct format");
+            }
+        } else {
+            System.out.println("Returning");
+        }
 
     }
 
-    // Search by Name
-    private static Product findProducByName(String productName) {
+    public static void promptSearchDepartment(){
+        System.out.println("Enter the department of the product or type 'X' to go back :");;
+        String department = mainScanner.nextLine().trim(); // Trim and trailing spaces
+
+        if (!department.equalsIgnoreCase("X")){
+            String normalizeInputName = department.toLowerCase(); //Normalize to lowercase search
+
+            ArrayList<Product> matchingProductsDepartment = findProductByDepartment(normalizeInputName);
+            if (!matchingProductsDepartment.isEmpty()){
+                System.out.println("Product found:");
+                for (Product product : matchingProductsDepartment){
+                    System.out.println(product);
+                    addToCartPrompt(product);
+                }
+            }else {
+                System.out.println("Product not found");
+            }
+        } else {
+            System.out.println(" Returning");
+        }
+    }
+
+    // Search by Name with some matching case
+    private static ArrayList<Product> findProductByName (String productName) {
+        ArrayList<Product> matchingProductsName = new ArrayList<>(); // temporal array that holds all the matching options
         for (Product product : products) {
-            if (product.getProductName() == productName) {
-                return product;
+            if (product.getProductName().toLowerCase().contains(productName)) { //Normalize product name and compare with input
+               matchingProductsName.add(product);
+
             }
         }
-        return null;
+        return matchingProductsName;
     }
 
     // Search by Price
-    private static Product findProducByPrice(Double price) {
+    private static Product findProductByPrice(Double price) {
         for (Product product : products) {
             if (product.getPrice() == price) {
                 return product;
@@ -199,14 +251,45 @@ public class OnlineStore {
     }
 
     // Search by Department
-    private static Product findProducByDep(String department) {
+    private static ArrayList<Product> findProductByDepartment(String department) {
+        ArrayList<Product> matchingProductsDepartment = new ArrayList<>();// temporal array that holds all the matching options
+
         for (Product product : products) {
-            if (product.getDepartment() == department) {
-                return product;
+            if (product.getDepartment().toLowerCase().contains(department)) {//Normalize product name and compare with input
+                matchingProductsDepartment.add(product);
             }
         }
-        return null;
+        return matchingProductsDepartment;
     }
+
+
+
+    //Display cart
+
+
+    private static void displayCart() {
+        if (cart.isEmpty()) {
+            System.out.println("Your cart is empty.");
+        } else {
+            System.out.println("Items in your cart:");
+            for (Product product : cart) {
+                System.out.println(product);
+            }
+        }
+    }
+
+    // Add product to cart prompt
+    public static void addToCartPrompt(Product product) {
+        System.out.println("Would you like to add this product to your cart? (Y/N)");
+        String input = mainScanner.nextLine();
+        if (input.equalsIgnoreCase("Y")) {
+            cart.add(product);
+            System.out.println("Product added to cart: " + product.getProductName());
+        } else {
+            System.out.println("Product not added to cart.");
+        }
+    }
+
 
 
 }
