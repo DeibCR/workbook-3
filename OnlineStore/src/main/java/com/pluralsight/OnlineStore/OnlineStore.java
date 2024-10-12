@@ -26,7 +26,7 @@ public class OnlineStore {
     }
 
     private static ArrayList<Product> readProductFromFile(String fileInput) {
-        Product b;
+
         ArrayList<Product> productList = new ArrayList<>();
         try (BufferedReader productFileReader = openFileReader(fileInput)) {
             String productString;
@@ -73,6 +73,7 @@ public class OnlineStore {
                     break;
                 case 2:
                     displayCart();
+                    removeItemFromCart();
                     break;
                 case 3:
                     System.out.println("Exiting the Online Store, Thank you!");
@@ -181,7 +182,7 @@ public class OnlineStore {
 
     public static void promptSearchName() {
         System.out.println("Enter the name of the product or type 'X' to go back :");
-        ;
+
         String name = mainScanner.nextLine().trim(); // Trim and trailing spaces
 
         if (!name.equalsIgnoreCase("X")) {
@@ -312,4 +313,69 @@ public class OnlineStore {
             System.out.println("Product not added to cart.");
         }
     }
+
+    //Remove items from cart
+    private static void removeItemFromCart(){
+        System.out.println("""
+                =================================
+                           Remove Item Menu
+                =================================
+                Please select an option:
+                1- Remove by Name
+                2- Remove by Price
+                3- Remove by Department
+                4- Go Back
+                =================================
+                """);
+        int option = mainScanner.nextInt();
+        //mainScanner.nextLine();
+
+        switch (option) {
+            case 1:
+                removeByName();
+                break;
+            case 2:
+                removeByPrice();
+                break;
+            case 3:
+                removeByDepartment();
+                break;
+            case 4:
+                System.out.println("Returning to cart...");
+                return;
+            default:
+                System.out.println("Invalid option. Please choose 1, 2, 3, or 4.");
+        }
+    }
+
+    //Remove by name
+    private static void removeByName(){
+        System.out.println("Enter the name of the product to remove:");
+        String name= mainScanner.nextLine().trim().toLowerCase();
+
+        cart.removeIf(product -> product.getProductName().toLowerCase().contains(name));
+        System.out.println("Product(s) removed by name: " + name);
+    }
+
+    //Remove by price
+    private static void removeByPrice(){
+        System.out.println("Enter the name of the product (00.00) to remove:");
+        double price = mainScanner.nextDouble();
+
+        cart.removeIf(product -> product.getPrice()==price);
+        System.out.println("Product(s) removed by price: $" + price);
+    }
+
+    //Remove by department
+    private static void removeByDepartment(){
+        System.out.println("Enter the department of the product to remove:");
+        String department = mainScanner.nextLine().trim().toLowerCase();
+
+        cart.removeIf(product -> product.getDepartment().toLowerCase().contains(department));
+        System.out.println("Product(s) removed by department: " + department);
+    }
+
+
+
+
 }
