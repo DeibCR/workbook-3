@@ -57,23 +57,24 @@ public class OnlineStore {
         boolean keepCount = true;
         while (keepCount) {
             System.out.println("""
-                             Welcome to the Online Store
-                           (Please type the option you want to access)
+                    =================================
+                       Welcome to the Online Store
+                    =================================
+                          Please select an option
                            1- Display Products
                            2- Display Cart
-                           3- Exit \s
-                    \s""");
-            int option = mainScanner.nextInt();
+                           3- Exit
+                    =================================
+                    """);
+            int option = mainScanner.nextInt(); //Process the selected option
             mainScanner.nextLine();
 
             switch (option) {
                 case 1:
                     products = readProductFromFile(fileInput); // Call to the method that read a file with the products
-                    for (Product product : products) {
-                        System.out.println(product);// display a list of products
-                    }
+                    displayProducts(products); //Display list of products using a method
                     mainScanner.nextLine(); // next line
-                    productsScreenMenu();
+                    productsScreenMenu(); // Open a new menu when the user can select to search for a product or filter
 
                     break;
                 case 2:
@@ -89,16 +90,35 @@ public class OnlineStore {
         }
 
     }
-    // Display Products Screen, that call search methods
+    //Display products
+    private static void displayProducts (ArrayList<Product> products){
+        System.out.printf("%-10s %-35s %-10s %-20s%n", "SKU", "Product Name", "Price", "Department");
+        System.out.println("---------------------------------------------------------------");
+
+        for (Product product : products) {
+            System.out.printf("%-10s %-35s $%-9.2f %-20s%n", product.getSku(), product.getProductName(), product.getPrice(), product.getDepartment());
+        }
+
+        System.out.println("---------------------------------------------------------------");
+        System.out.println("Total Products: " + products.size());
+    }
+
+
+
+    //  Products Screen, that call search methods
     private static void productsScreenMenu() {
         boolean counter = true;
         while (counter){
             System.out.println("""
-                           (Please type the option you want to access)
-                           1- Search Product
-                           2- Filter Product
-                           3- Go back\s
-                    \s""");
+                    =================================
+                              Products Menu
+                    =================================
+                    Please select an option
+                    1- Search Product
+                    2- Sort Product
+                    3- Go back
+                    =================================
+                   """);
             int option= mainScanner.nextInt();
             mainScanner.nextLine();
 
@@ -128,12 +148,15 @@ public class OnlineStore {
         boolean opt = true;
         while (opt){
             System.out.println("""
-                           (Please type the option you want to access)
-                           1- Search by Name
-                           2- Search by Price
-                           3- Search by Department
-                           4- Go back\s
-                    \s""");
+                    =================================
+                              Search Menu
+                    =================================
+                    Please select an option
+                    1- Search by Name
+                    2- Search by Price
+                    3- Search by Department
+                    4- Go Back
+                    """);
             int option= mainScanner.nextInt();
             mainScanner.nextLine();
 
